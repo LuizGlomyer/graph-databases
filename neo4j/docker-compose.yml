@@ -1,0 +1,9 @@
+name: neo4j-test
+services:
+    neo4j:
+        ports:
+            - 7474:7474
+            - 7687:7687
+        volumes:
+            - $HOME/neo4j/data:/data
+        image: neo4j
