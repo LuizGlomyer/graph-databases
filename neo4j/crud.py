@@ -81,71 +81,204 @@ class Neo4jAPI:
           return f"Deleted relationship of type '{relationship_type}' between {property_value1} and {property_value2}."
 
 
-if __name__ == "__main__":
-    neo4j_api = Neo4jAPI("bolt://localhost:7687", "neo4j", "12345678")
-
+def insert_persons(conn):
     # Create a node
-    created_node = neo4j_api.create_node("Person", {"name": "Alice", "age": 30})
-    print("Created Node:", created_node)
-    created_node = neo4j_api.create_node("Person", {"name": "Bob", "age": 35})
-    print("Created Node:", created_node)
-    created_node = neo4j_api.create_node("Person", {"name": "Dario", "age": 26})
-    print("Created Node:", created_node)
-    created_node = neo4j_api.create_node("Person", {"name": "Emily", "age": 23})
-    print("Created Node:", created_node)
-    print()
-
+    created_node = conn.create_node("Person", {"name": "Alice", "age": 30})
+    print(f"Created Node:{created_node}")
+    created_node = conn.create_node("Person", {"name": "Bob", "age": 35})
+    print(f"Created Node:{created_node}")
+    created_node = conn.create_node("Person", {"name": "Dario", "age": 26})
+    print(f"Created Node:{created_node}")
+    created_node = conn.create_node("Person", {"name": "Emily", "age": 23})
+    print(f"Created Node:{created_node}\n")
 
     # Create a "KNOWS" relationship
-    relationship = neo4j_api.create_relationship(
+    relationship = conn.create_relationship(
         "Person", "name", "Alice",
         "Person", "name", "Bob",
         "KNOWS",
         {"since": 2021}
     )
-    print("Created Relationship:", relationship)
-    relationship = neo4j_api.create_relationship(
+    print(f"Created Relationship:{relationship}")
+    relationship = conn.create_relationship(
         "Person", "name", "Dario",
         "Person", "name", "Bob",
         "KNOWS",
         {"since": 2020}
     )
-    print("Created Relationship:", relationship)
-    relationship = neo4j_api.create_relationship(
+    print(f"Created Relationship:{relationship}")
+    relationship = conn.create_relationship(
         "Person", "name", "Emily",
         "Person", "name", "Alice",
         "KNOWS",
         {"since": 2020}
     )
-    print("Created Relationship:", relationship)
-    print()
-
+    print(f"Created Relationship:{relationship}\n")
 
     # Get a node
-    retrieved_node = neo4j_api.get_node("Person", "name", "Alice")
-    print("Retrieved Node:", retrieved_node)
-    print()
-
+    retrieved_node = conn.get_node("Person", "name", "Alice")
+    print(f"Retrieved Node:{retrieved_node}\n")
 
     # Update a node
-    updated_node = neo4j_api.update_node("Person", "name", "Alice", {"age": 31, "name": "Clarissa"})
-    print("Updated Node:", updated_node)
-    print()
-    
+    updated_node = conn.update_node("Person", "name", "Alice", {"age": 31, "name": "Clarissa"})
+    print(f"Updated Node:{updated_node}\n")
     
     # Delete a relationship
-    result = neo4j_api.delete_relationship(
+    result = conn.delete_relationship(
         "Person", "name", "Emily",
         "Person", "name", "Clarissa",
         "KNOWS"
     )
     print(result)
 
-
     # Delete a node
-    delete_msg = neo4j_api.delete_node("Person", "name", "Emily")
-    print(delete_msg)
-    print()
+    delete_msg = conn.delete_node("Person", "name", "Emily")
+    print(delete_msg + '\n')
 
-    # Close connection
-    neo4j_api.close()
+
+def insert_poc(conn):
+    created_node = conn.create_node("Game", {"name": "Death Stranding"})
+    created_node = conn.create_node("Game", {"name": "Metal Gear Solid V: Phantom Pain"})
+    created_node = conn.create_node("Person", {"name": "Hideo Kojima"})
+    created_node = conn.create_node("Person", {"name": "Norman Reedus"})
+    created_node = conn.create_node("Character", {"name": "Sam Porter Bridges"})
+    created_node = conn.create_node("Character", {"name": "Daryl Dixon"})
+    created_node = conn.create_node("TV_Series", {"name": "The Walking Dead"})
+    created_node = conn.create_node("Franchise", {"name": "Metal Gear"})
+    created_node = conn.create_node("Platform", {"name": "PC"})
+    created_node = conn.create_node("Tag", {"name": "Stealth"})
+    created_node = conn.create_node("Tag", {"name": "Mocap"})
+
+    relationship = conn.create_relationship(
+        "Person", "name", "Norman Reedus",
+        "Character", "name", "Sam Porter Bridges",
+        "interprets"
+    )
+    relationship = conn.create_relationship(
+        "Person", "name", "Norman Reedus",
+        "Character", "name", "Daryl Dixon",
+        "interprets"
+    )
+    relationship = conn.create_relationship(
+        "Person", "name", "Norman Reedus",
+        "Game", "name", "Death Stranding",
+        "acts_for"
+    )
+    relationship = conn.create_relationship(
+        "Person", "name", "Norman Reedus",
+        "TV_Series", "name", "The Walking Dead",
+        "acts_for"
+    )
+    relationship = conn.create_relationship(
+        "Character", "name", "Sam Porter Bridges",
+        "Game", "name", "Death Stranding",
+        "is_character_of"
+    )
+
+    relationship = conn.create_relationship(
+        "Character", "name", "Daryl Dixon",
+        "TV_Series", "name", "The Walking Dead",
+        "is_character_of"
+    )
+    relationship = conn.create_relationship(
+        "Person", "name", "Hideo Kojima",
+        "Game", "name", "Death Stranding",
+        "is_writer"
+    )
+
+    relationship = conn.create_relationship(
+        "Person", "name", "Hideo Kojima",
+        "Game", "name", "Death Stranding",
+        "is_director"
+    )
+    relationship = conn.create_relationship(
+        "Person", "name", "Hideo Kojima",
+        "Franchise", "name", "Metal Gear",
+        "is_creator"
+    )
+    relationship = conn.create_relationship(
+        "Franchise", "name", "Metal Gear",
+        "Game", "name", "Metal Gear Solid V: Phantom Pain",
+        "has_game"
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Metal Gear Solid V: Phantom Pain",
+        "Tag", "name", "Stealth",
+        "has_tag"
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Metal Gear Solid V: Phantom Pain",
+        "Platform", "name", "PC",
+        "has_platform",
+        {"release_date": "2015"}
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Death Stranding",
+        "Platform", "name", "PC",
+        "has_platform"
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Death Stranding",
+        "Tag", "name", "Mocap",
+        "has_tag"
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Death Stranding",
+        "Genre", "name", "Action",
+        "has_genre"
+    )
+    relationship = conn.create_relationship(
+        "Game", "name", "Metal Gear Solid V: Phantom Pain",
+        "Genre", "name", "Action",
+        "has_genre"
+    )
+    relationship = conn.create_relationship(
+        "TV_Series", "name", "The Walking Dead",
+        "Genre", "name", "Action",
+        "has_genre"
+    )
+
+    # User data
+    created_node = conn.create_node("User", {"id": "123456", "name": "Luiz"})
+    relationship = conn.create_relationship(
+        "User", "id", "123456",
+        "Game", "name", "Metal Gear Solid V: Phantom Pain",
+        "consumed",
+        {
+            "rating": 8, 
+            "start_date": "20/08/2021",
+            "end_date": "15/03/2022",
+            "review": "This game is incomplete!"
+        }
+    )
+    relationship = conn.create_relationship(
+        "User", "id", "123456",
+        "Game", "name", "Death Stranding",
+        "consumed",
+        {
+            "rating": 9, 
+            "start_date": "12/12/2023",
+            "end_date": "10/01/2024",
+            "review": "Great cinematic experience from Kojima!"
+        }
+    )
+    relationship = conn.create_relationship(
+        "User", "id", "123456",
+        "TV_Series", "name", "The Walking Dead",
+        "consumed",
+        {
+            "rating": 5, 
+            "end_date": "12/06/2018",
+            "review": "Watched until right before season 3. Lost interest over time."
+        }
+    )
+
+
+if __name__ == "__main__":
+    neo4j_api = Neo4jAPI("bolt://localhost:7687", "neo4j", "12345678")
+    try:
+        insert_persons(neo4j_api)
+        insert_poc(neo4j_api)
+    finally:
+        # Close connection
+        neo4j_api.close()

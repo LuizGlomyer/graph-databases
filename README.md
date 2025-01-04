@@ -4,5 +4,8 @@ Some API implementations for graph-based databases for tests and prototyping.
 
 ## Neo4j
 [
-  ![Neo4j demo](docs/neo4j.png)
+  ![Neo4j demo](docs/neo4j-1.png)
+](/neo4j/README.md)
+[
+  ![Neo4j demo 2](docs/neo4j-2.png)
 ](/neo4j/README.md)
