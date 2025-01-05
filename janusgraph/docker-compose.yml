@@ -1,0 +1,11 @@
+name: <your project name>
+services:
+    janusgraph:
+        container_name: janusgraph-default
+        ports:
+            - 8182:8182
+        image: janusgraph/janusgraph:latest
+    janusgraph-visualizer:
+        container_name: janusgraph-visualizer
+        network_mode: host
+        image: janusgraph/janusgraph-visualizer:latest
