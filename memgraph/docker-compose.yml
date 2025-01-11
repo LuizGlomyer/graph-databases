@@ -1,0 +1,33 @@
+name: memgraph-test
+services:
+  memgraph:
+    image: memgraph/memgraph-mage:latest
+    container_name: memgraph-mage
+    pull_policy: always
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+    volumes:
+      - mg_lib:/var/lib/memgraph
+      - mg_etc:/etc/memgraph
+      - mg_log:/var/log/memgraph
+    command: ["--log-level=TRACE"]
+  lab:
+    image: memgraph/lab:latest
+    container_name: memgraph-lab
+    pull_policy: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - memgraph
+    environment:
+      - QUICK_CONNECT_MG_HOST=memgraph
+      # if using windows - QUICK_CONNECT_MG_HOST=host.docker.internal
+      - QUICK_CONNECT_MG_PORT=7687
+volumes:
+    mg_lib:
+        name: mg_lib
+    mg_etc:
+        name: mg_etc
+    mg_log:
+        name: mg_log
